@@ -56,6 +56,14 @@ public:
             service->update();
         }
     }
+    void shutdown() override {
+        for (IBladeService* service : services) {
+            service->shutdown();
+        }
+    }
+    void addService(IBladeService* service) {
+        services.push_back(service);
+    }
 };
 
 #ifdef ARDUINO
