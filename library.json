@@ -1,0 +1,24 @@
+{
+  "name": "BladeService",
+  "version": "0.0.0",
+  "description": "a simple, cross-os service host & task wrapper",
+  "keywords": "task, wrapper, thread, rtos",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://gitlab.com/LiPolymer/BladeService.git"
+  },
+  "authors":
+  [
+    {
+      "name": "LiPolymer",
+      "email": "fish@lipoly.ink",
+      "url": "https://github.com/LiPolymer"
+    }
+  ],
+  "license": "All Rights Reserved",
+  "homepage": "https://gitlab.com/LiPolymer/BladeService",
+  "dependencies": { },
+  "frameworks": "*",
+  "platforms": "*"
+}
