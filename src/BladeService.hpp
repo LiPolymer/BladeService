@@ -59,7 +59,7 @@ public:
 };
 
 #ifdef ARDUINO
-#define BLADE_MARCO_DEPLOY(host, set) \
+#define BLADE_SETUP(host, set) \
     void setup() { set;host.setup(); } \
     void loop() { host.update(); }
 #endif //ARDUINO
