@@ -32,7 +32,7 @@ public:
 
 class BladeActionPayload : public IBladePayload {
 public:
-    explicit BladeActionPayload(BladeAction  payload) : action(std::move(payload)) {}
+    explicit BladeActionPayload(BladeAction payload) : action(std::move(payload)) {}
     BladeAction action;
     void payload(BladeTask* task) override {
         if(action)action(task);
@@ -50,8 +50,9 @@ public:
     explicit BladeTask(IBladePayload* payload) :
         ownedPayload(nullptr), payload(payload) {}
 
-    explicit BladeTask(const BladeAction action) :
-        ownedPayload(new BladeActionPayload(action)), payload(ownedPayload.get()) {}
+    explicit BladeTask(BladeAction action) :
+        ownedPayload(std::unique_ptr<IBladePayload>(new BladeActionPayload(std::move(action)))),
+        payload(ownedPayload.get()) {}
 
     std::atomic<bool> isShutdownRequested {false};
     std::atomic<bool> isRunning {false};
