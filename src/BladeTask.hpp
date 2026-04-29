@@ -18,10 +18,11 @@
 
 #include <atomic>
 #include <memory>
+#include <utility>
 
 class BladeTask;
 
-using BladeAction = void (*)(BladeTask*);
+using BladeAction = std::function<void(BladeTask*)>;
 
 class IBladePayload {
 public:
@@ -31,10 +32,10 @@ public:
 
 class BladeActionPayload : public IBladePayload {
 public:
-    explicit BladeActionPayload(const BladeAction payload) : action(payload) {}
+    explicit BladeActionPayload(BladeAction  payload) : action(std::move(payload)) {}
     BladeAction action;
     void payload(BladeTask* task) override {
-        action(task);
+        if(action)action(task);
     }
 };
 
