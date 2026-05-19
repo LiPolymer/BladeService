@@ -18,25 +18,25 @@ public:
 
 class IBladeServiceWrapper : public IBladeService {
 public:
-    explicit IBladeServiceWrapper(IBladeService& service) : service(service) {}
-    IBladeService& service;
+    explicit IBladeServiceWrapper(IBladeService* service) : service(service) {}
+    IBladeService* service;
 };
 
 class AsyncBootstrap final : public IBladeServiceWrapper, public IBladePayload{
 public:
-    explicit AsyncBootstrap(IBladeService& service) :
+    explicit AsyncBootstrap(IBladeService* service) :
         IBladeServiceWrapper(service), task(this){}
     BladeTask task;
     void setup() override {
-        service.setup();
+        service->setup();
     }
     void update() override {
         if (!task.isRunning) task.start();
     }
     void payload(BladeTask* _) override {
         while (!task.isShutdownRequested) {
-            service.update();
-        } service.shutdown();
+            service->update();
+        } service->shutdown();
     }
     void shutdown() override {
         task.stop(0);
@@ -45,6 +45,11 @@ public:
 
 class BladeHost final : public IBladeService {
 public:
+    explicit BladeHost(const std::initializer_list<IBladeService*> svs) {
+        for (auto sv : svs) {
+            services.push_back(sv);
+        }
+    }
     std::vector<IBladeService*> services; //todo: 考虑使用独特指针
     void setup() override {
         for (IBladeService* service : services) {
@@ -63,6 +68,11 @@ public:
     }
     void addService(IBladeService* service) {
         services.push_back(service);
+    }
+    void addServices(const std::initializer_list<IBladeService*> svs) {
+        for (auto sv : svs) {
+            services.push_back(sv);
+        }
     }
 };
 
