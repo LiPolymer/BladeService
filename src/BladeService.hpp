@@ -133,7 +133,16 @@ public:
         const std::string id = getTypeIdentity<T>();
         return getService<T>(id);
     }
+
+#ifndef BLADE_DISABLE_GLOBAL_HOST
+    static BladeHost Host;
+#endif
+
 };
+
+#ifndef BLADE_DISABLE_GLOBAL_HOST
+BladeHost BladeHost::Host;
+#endif
 
 #ifdef ARDUINO
 #define BLADE_SETUP(host, set) \
