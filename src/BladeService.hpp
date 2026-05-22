@@ -113,9 +113,11 @@ public:
         return nullptr;
     }
 
-    template <class T, typename... Args> void addSingleton(Args&&... args) {
+    template <class T, typename... Args> T& addSingleton(Args&&... args) {
         static_assert(std::is_base_of<IBladeService, T>::value, "T should be a service");
-        services.emplace(getTypeIdentity<T>(), new T(std::forward<Args>(args)...));
+        auto singleton = new T(std::forward<Args>(args)...);
+        services.emplace(getTypeIdentity<T>(), singleton);
+        return *singleton;
     }
 
     template <class T> void takeSingleton(T& instance) {
