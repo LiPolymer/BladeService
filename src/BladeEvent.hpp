@@ -61,7 +61,7 @@ public:
         return &marker;
     }
     bool is_equal(const IBladeDelegate<Res, ArgTypes...>* other) const override {
-        if (this->get_type_id() != other->get_type_id()) return false;
+        if (this->getTypeIdentity() != other->getTypeIdentity()) return false;
         auto* typed_other = static_cast<const BladeCallable*>(other);
         return this->id == typed_other->id;
     }
